@@ -1,5 +1,5 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http import HttpResponseRedirect, HttpResponseNotFound, Http404
+from django.shortcuts import render, get_object_or_404, reverse, redirect
 from django.template.defaultfilters import title
 
 from webapp.models import Article
@@ -14,13 +14,12 @@ def article_list_view(request):
     }
     return render(request,'article_list.html', context)
 
-def article_detail_view(request):
-    article_id = request.GET.get('id')
-    if article_id:
-        article = Article.objects.get(id=article_id)
-        return render(request, 'article_detail.html', {'article': article})
-    else:
-        return HttpResponseRedirect('/')
+def article_detail_view(request,*args, pk, **kwargs):
+    article = get_object_or_404(Article, pk=pk)
+    return render(request, 'article_detail.html', {'article': article})
+
+
+
 
 def article_create_view(request):
     if request.method == 'GET':
@@ -29,5 +28,7 @@ def article_create_view(request):
         title=request.POST.get('title')
         content=request.POST.get('content')
         author=request.POST.get('author')
-        Article.objects.create(title=title, content=content, author=author)
-        return HttpResponseRedirect('/')
+        article=Article.objects.create(title=title, content=content, author=author)
+#        return HttpResponseRedirect(reverse('article_list'))
+#        return redirect('article_list')
+        return redirect('article_detail', pk=article.id)
