@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Article</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block  content %}
 
     <h1> Статьи </h1>
 
@@ -17,6 +13,4 @@
         <a href="{% url 'article_detail' article.id %}">Подробнее...</a>
         </div>
     {% endfor %}
-
-</body>
-</html>
+{% endblock %}

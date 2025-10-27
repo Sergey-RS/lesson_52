@@ -18,9 +18,6 @@ def article_detail_view(request,*args, pk, **kwargs):
     article = get_object_or_404(Article, pk=pk)
     return render(request, 'article_detail.html', {'article': article})
 
-
-
-
 def article_create_view(request):
     if request.method == 'GET':
         return  render(request, 'article_create.html')
