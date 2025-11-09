@@ -4,6 +4,8 @@ from django.template.defaultfilters import title
 
 from webapp.models import Article
 
+from webapp.validation import validate
+
 
 # Create your views here.
 
@@ -22,10 +24,18 @@ def article_create_view(request):
     if request.method == 'GET':
         return  render(request, 'article_create.html')
     elif request.method == 'POST':
-        title=request.POST.get('title')
-        content=request.POST.get('content')
-        author=request.POST.get('author')
-        article=Article.objects.create(title=title, content=content, author=author)
+        errors = validate(request.POST)
+        article = Article()
+        article.title=request.POST.get('title')
+        article.content=request.POST.get('content')
+        article.author=request.POST.get('author')
+        if errors:
+            return render(request, 'article_create.html', {'errors': errors, 'article': article})
+#        title=request.POST.get('title')
+#        content=request.POST.get('content')
+#        author=request.POST.get('author')
+#        article=Article.objects.create(title=title, content=content, author=author)
+        article.save()
 #        return HttpResponseRedirect(reverse('article_list'))
 #        return redirect('article_list')
         return redirect('article_detail', pk=article.id)
@@ -38,6 +48,9 @@ def article_update_view(request, *args, pk, **kwargs):
             article.title = request.POST.get('title')
             article.content = request.POST.get('content')
             article.author = request.POST.get('author')
+            errors = validate(request.POST)
+            if errors:
+                return render(request, 'article_update.html', {'errors': errors, 'article': article})
             article.save()
             return redirect('article_detail', pk=article.id)
 
