@@ -29,3 +29,19 @@ def article_create_view(request):
 #        return HttpResponseRedirect(reverse('article_list'))
 #        return redirect('article_list')
         return redirect('article_detail', pk=article.id)
+
+def article_update_view(request, *args, pk, **kwargs):
+    article = get_object_or_404(Article, pk=pk)
+    if request.method == "GET":
+        return render(request, 'article_update.html', {'article': article })
+    elif request.method == "POST":
+            article.title = request.POST.get('title')
+            article.content = request.POST.get('content')
+            article.author = request.POST.get('author')
+            article.save()
+            return redirect('article_detail', pk=article.id)
+
+def article_delete_view(request, *args, pk, **kwargs):
+    article = get_object_or_404(Article, pk=pk)
+    article.delete()
+    return redirect('article_list')
