@@ -3,9 +3,9 @@ from webapp.models import Article
 # Register your models here.
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'author', 'update_at')
+    list_display = ('id', 'title', 'author', 'updated_at')
     list_filter = ('author',)
     search_fields = ('title','content')
-    fields = ('title', 'content', 'author', 'created_at', 'update_at')
-    readonly_fields = ('created_at', 'update_at')
+    fields = ('title', 'content', 'author', 'created_at', 'updated_at')
+    readonly_fields = ('created_at', 'updated_at')
 
