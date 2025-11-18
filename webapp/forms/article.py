@@ -11,7 +11,9 @@ from  django.core.exceptions import ValidationError
 class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
-        fields = ['title', 'content','tags', 'author']
+        fields = ['title', 'content',
+                  'tags',
+                  'author']
         #exclude = ('created_at', 'updated_at')
         widgets = {
             'title': widgets.Input(attrs={'class': 'form-control'}),

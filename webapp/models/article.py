@@ -11,9 +11,7 @@ class Article(BaseModel):
     tags = models.ManyToManyField('webapp.Tag',
                                   verbose_name='Теги',
                                   related_name='articles',
-                                  blank=True,
-                                  through='webapp.ArticleTag',
-                                  through_fields=('article', 'tag'))
+                                  blank=True)
 
 
 
