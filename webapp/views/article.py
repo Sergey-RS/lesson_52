@@ -3,9 +3,9 @@ from urllib.parse import urlencode
 from django.shortcuts import render, get_object_or_404, redirect
 
 from django.urls import reverse, reverse_lazy
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, DetailView
 
-from webapp.models import Article
+from webapp.models import Article, article
 from webapp.forms import ArticleForm, SimpleSearchForm
 
 from  django.db.models import Q
@@ -51,13 +51,20 @@ class ArticleView(ListView):
 
 
 
-class ArticleDetailView(TemplateView):
+class ArticleDetailView(DetailView):
     template_name = 'article/article_detail.html'
+    model = Article
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['article'] = get_object_or_404(Article, pk=self.kwargs.get('pk'))
+        article = self.object
+        context['comments'] = article.comments.order_by('-created_at')
         return context
+
+    # def get_context_data(self, **kwargs):
+        # context = super().get_context_data(**kwargs)
+        # context['article'] = get_object_or_404(Article, pk=self.kwargs.get('pk'))
+        # return context
 
 
 class ArticleCreateView(FormView):
